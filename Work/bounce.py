@@ -5,4 +5,4 @@ x=100
 r=x
 for i in range(10):
     r = r * (3 / 5)
-    print(round(r,2))
+    print(round(r,4))
