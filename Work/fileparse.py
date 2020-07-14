@@ -1,12 +1,12 @@
 # fileparse.py
 import csv
 
-def parse_csv(filename, select=None):
+def parse_csv(filename, select=None,types=None,has_headers=True, delimiter =None):
     '''
     Parse a CSV file into a list of records
     '''
     with open(filename) as f:
-        rows = csv.reader(f)
+        rows= csv(f,delimiter=delimiter)
 
         # Read the file headers
         headers = next(rows)
@@ -25,7 +25,24 @@ def parse_csv(filename, select=None):
             if indices:
                 row = [ row[index] for index in indices ]
 
+            if types:
+                 row = [func(val) for func, val in zip(types, row) ]
+
+            if has_headers:
+                    record = dict(zip(headers,row))
+            else:
+                record = tuple(row)
+
             record = dict(zip(headers, row))
             records.append(record)
 
     return records
+
+    records= parse_csv('Data/portfolio.csv', select=['name','shares'])
+    print(records)
+    records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'])
+    print(records)
+    records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'], has_headers =False)
+    print(records)
+    records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'], has_headers =False, delimiter=' ')
+    print(records)
