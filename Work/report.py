@@ -32,15 +32,25 @@ def read_prices(filename):
 
     return prices
 
+def make_report(portfolio,prices):
+    x=[]
+    for s in portfolio:
+        cost = prices[s['name']]
+        Gainloss = cost - s['price']
+        summary= (s['name'], s['shares'], cost, Gainloss)
+        #tupple to recollect all data
+        x.append(summary)
+    return x
+
 portfolio = read_portfolio('Data/portfolio.csv')
 prices = read_prices('Data/prices.csv')
-
+report = make_report(portfolio,prices)
 total_cost = 0.0
 current_value = 0.0
-for s in portfolio:
-    total_cost += s['shares']*s['price']
-    current_value += s['shares']*prices[s['name']]
+print('Name','#shares','Price','Gain/Loss')
+for q in report:
+    print(q)
 
-print('Total cost', total_cost)
-print('Current value:', current_value)
-print('Gain/Loss:', current_value - total_cost)
+#print('Total cost', total_cost)
+#print('Current value:', current_value)
+#print('Gain/Loss:', current_value - total_cost)
