@@ -38,6 +38,7 @@ def parse_csv(filename, select=None,types=None,has_headers=True, delimiter =None
 
     return records
 
+    #if __name__ =
     records= parse_csv('Data/portfolio.csv', select=['name','shares'])
     print(records)
     records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'])
