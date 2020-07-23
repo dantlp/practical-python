@@ -1,15 +1,18 @@
 # fileparse.py
+#
+# Exercise 3.3
 import csv
 
-def parse_csv(filename, select=None,types=None,has_headers=True, delimiter =None):
+def parse_csv(filename, select=None,types=None,has_headers=True, deliimiter=None):
     '''
     Parse a CSV file into a list of records
     '''
     with open(filename) as f:
-        rows= csv(f,delimiter=delimiter)
+        rows = csv.reader(f, deliimiter=delimiter)
 
         # Read the file headers
-        headers = next(rows)
+        if has_headers:
+            headers = next(rows)
 
         if select:
             indices = [headers.index(colname) for colname in select]
@@ -23,27 +26,24 @@ def parse_csv(filename, select=None,types=None,has_headers=True, delimiter =None
                 continue
             
             if indices:
-                row = [ row[index] for index in indices ]
+                row = [ row[index] for index in indices]
 
             if types:
-                 row = [func(val) for func, val in zip(types, row) ]
+                row = [func(val) for func, val in zip(types, row)]
 
             if has_headers:
-                    record = dict(zip(headers,row))
+                record = dict(zip(headers, row))
             else:
                 record = tuple(row)
-
-            record = dict(zip(headers, row))
             records.append(record)
 
     return records
 
-    #if __name__ =
-    records= parse_csv('Data/portfolio.csv', select=['name','shares'])
-    print(records)
-    records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'])
-    print(records)
-    records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'], has_headers =False)
-    print(records)
-    records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'], has_headers =False, delimiter=' ')
-    print(records)
+records= parse_csv('Data/portfolio.csv', types=[str,int,float])
+print(records)
+records= parse_csv('Data/portfolio.csv', types=[str,int], select=['name','shares'])
+print(records)
+records= parse_csv('Data/portfolio.csv', types=[str,float], has_headers =False)
+print(records)
+records= parse_csv('Data/portfolio.csv', types=[str,int,float], deliimiter=' ')
+print(records)
